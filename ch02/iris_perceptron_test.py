@@ -1,20 +1,10 @@
-import sys
-
 import numpy as np
 import pandas as pd
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt, colors, markers
 from tabulate import tabulate
 
-from ch02.OOPerceptronAPI import Perceptron
-
-message = '왜 한글이 깨지는 가?'
-print(message)
-
-print(sys.getdefaultencoding())
-print(sys.getfilesystemencoding())
-
-print(sys.stdin.encoding)
-print(sys.stdout.encoding)
+from ch02.OOMachineLearningAPI import Perceptron
+from util import plot_decision_regions
 
 if __name__ == '__main__':
 	S = '/'.join(['https://archive.ics.uci.edu', 'ml', 'machine-learning-databases', 'iris', 'iris.data'])
@@ -46,3 +36,11 @@ if __name__ == '__main__':
 	plt.xlabel('반복 횟수')
 	plt.ylabel('업데이트 수')
 	plt.show()
+
+	# 산점도 그리기
+	plot_decision_regions(X, y, classifier=ppn)
+	plt.xlabel('꽃받침 [cm]')
+	plt.ylabel('꽃입 [cm]')
+	plt.legend(loc='upper left')
+	plt.show()
+

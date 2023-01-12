@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 
-from ch02.OOMachineLearningAPI import AdalineGD
+from oop_ml_api.chapter02 import AdalineGD
 from general import iris_dataset
 from util import plot_decision_regions
 

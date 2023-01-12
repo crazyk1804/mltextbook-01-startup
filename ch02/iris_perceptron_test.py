@@ -3,7 +3,7 @@ import pandas as pd
 from matplotlib import pyplot as plt, colors, markers
 from tabulate import tabulate
 
-from ch02.OOMachineLearningAPI import Perceptron
+from oop_ml_api.chapter02 import Perceptron
 from util import plot_decision_regions
 
 if __name__ == '__main__':

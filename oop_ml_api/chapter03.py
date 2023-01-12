@@ -1,0 +1,76 @@
+import numpy as np
+import pandas as pd
+from tabulate import tabulate
+
+
+class LogisticRegressionGD(object):
+	"""
+	경사 하강법을 사용한 로지스틱 회귀 분류기
+
+	속성
+	-----------------------------------------------------------
+	w_: id-array
+		학습된 가중치
+	cost_: list
+		에포크마다 누적된 로지스틱 비용 함수값
+	"""
+
+	def __init__(self, eta=0.05, n_iter=100, random_state=1):
+		"""
+		:param eta: float
+			학습률
+		:param n_iter: int
+			훈련 데이터셋 반복 횟수
+		:param random_state:
+			가중치 무작위 초기화를 위한 난수 생성기 시드
+		"""
+		self.eta = eta
+		self.n_iter = n_iter
+		self.random_state = random_state
+
+		self.w_, self.cost_ = [], []
+
+	def fit(self, X, y):
+		"""
+		훈련 데이터 학습
+
+		:param X: { array-like }, shape = [n_samples, n_features]
+			n_samples 개의 샘플과 n_features 개의 특성으로 이루어진 훈련 데이터
+		:param y: array-like, shape = [n_samples]
+			타깃 값 (레이블)
+		:return: self
+		"""
+		rgen = np.random.RandomState(self.random_state)
+		self.w_ = rgen.normal(loc=0.0, scale=0.01, size=1 + X.shape[1])
+		self.cost_ = []
+
+		for i in range(self.n_iter):
+			net_input = self.net_input(X)
+			output = self.activation(net_input)
+			errors = y - output
+			self.w_[1:] += self.eta * X.T.dot(errors)
+			self.w_[0] += self.eta * errors.sum()
+
+			# 제곱 오차합 대신 로지스틱 비용을 계산
+			cost = (
+					-y.dot(np.log(output)) - ((1-y).dot(np.log(1 - output)))
+			)
+			self.cost_.append(cost)
+			return self
+
+	def net_input(self, X):
+		""" 최종 입력 계산 """
+		return np.dot(X, self.w_[1:]) + self.w_[0]
+
+	def activation(self, z):
+		""" 로지스틱 시그모이드 활성화 계산 """
+		# todo// 250 갑자기 무엇
+		return 1. / (1. + np.exp(-np.clip(z, -250, 250)))
+
+	def predict(self, X):
+		""" 단위 계단 함수를 사용하여 클래스 레이블을 반환 """
+		# 다음과 동일
+		# np.where(self.activation(self.net_input(X)) >= 0.5, 1, 0)
+		return np.where(self.net_input(X) > 0.0 > 1, 0)
+
+

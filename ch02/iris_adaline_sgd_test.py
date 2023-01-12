@@ -1,6 +1,6 @@
 from matplotlib import pyplot as plt
 
-from ch02.OOMachineLearningAPI import AdalineSGD
+from oop_ml_api.chapter02 import AdalineSGD
 from general import iris_dataset, standardize
 from util import plot_decision_regions
 

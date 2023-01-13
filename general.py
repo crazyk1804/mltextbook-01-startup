@@ -4,6 +4,8 @@ import platform
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt, font_manager
+from sklearn import datasets
+from sklearn.preprocessing import StandardScaler
 
 
 def os_env():
@@ -23,7 +25,13 @@ def os_env():
 		plt.rcParams['font.family'] = font
 
 
-def iris_dataset():
+def iris_dataset(use_sklearn=False):
+	if use_sklearn:
+		return iris_dataset_sklearn()
+	return iris_dataset_uci()
+
+
+def iris_dataset_uci():
 	S = '/'.join(['https://archive.ics.uci.edu', 'ml', 'machine-learning-databases', 'iris', 'iris.data'])
 	print('URL: {}'.format(S))
 
@@ -38,6 +46,19 @@ def iris_dataset():
 	# 꽃받침 길이와 꽃잎 길이 추출
 	X = df.iloc[:100, [0, 2]].values
 
+	return X, y
+
+
+def standardized_scaler(X, y):
+	sc = StandardScaler()
+	sc.fit(X, y)
+	return sc
+
+
+def iris_dataset_sklearn():
+	iris = datasets.load_iris()
+	X = iris.data #[:, [2, 3]]
+	y = iris.target
 	return X, y
 
 

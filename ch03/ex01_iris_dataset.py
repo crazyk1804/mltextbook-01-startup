@@ -6,12 +6,11 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-from general import print_anl
+from general import print_anl, iris_dataset
 from util import plot_decision_regions
 
-iris = datasets.load_iris()
-X = iris.data[:, [2, 3]]
-y = iris.target
+X, y = iris_dataset(use_sklearn=True)
+X = X[:, [2, 3]]
 print('클래스 레이블: ', np.unique(y))
 
 
